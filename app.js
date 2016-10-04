@@ -1,10 +1,9 @@
 var tmi = require("tmi.js");
 var auth = require("./auth.js");
 // var date = new Date();
-
 var options = {
     options: {
-        debug: true,
+        debug: true
     },
     connection: {
         reconnect: true
@@ -21,12 +20,7 @@ var client = new tmi.client(options);
 // Connect the client to the server..
 client.connect();
 client.on("connected", function (address, port) {
-    client.color("Red");
-    client.action("#orientirich", "is came");
-    setTimeout(function(){
-    client.say("#orientirich", "hello!");
-    }, 3000);
-
+   
 });
 
 
@@ -37,20 +31,37 @@ client.on("chat", function (channel, userstate, message, self) {
     // Do your stuff.
     switch (message) {
         case "!test" : 
-            client.action("#orientirich", "is here!");
+            client.action(channel, "is here!");
         break;
         case "!bye" :
          if (userstate.username == auth.author){
-               client.say ("#orientirich", "good bye!");
+               client.say (channel, "good bye!");
             setTimeout(function(){
                 client.disconnect();
             },3000);
          }else{
-               client.say ("#orientirich", "You are not my host");
+               client.say (channel, "You are not my host");
               };
         break;
+        case "!joinme" :
+        console.log(client.getChannels());
+        client.join(userstate['username']);
+        client.say(channel, "I have joined to " + userstate['display-name'] + "`s channel");
+       
+        break;
         case "!help" :
-            client.say("#orientirich", "i have only !test now");
+            client.say(channel, "i have only !test now");
         break;
     }
+});
+
+client.on("join", function (channel, username, self) {
+    if (self) {
+        client.color("Red");
+        client.action(channel, "is came");
+        setTimeout(function(){
+        client.say(channel, "hello!");
+        }, 3000);
+    };
+
 });
