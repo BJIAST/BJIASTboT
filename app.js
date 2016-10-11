@@ -33,16 +33,6 @@ client.on("chat", function (channel, userstate, message, self) {
         case "!test" : 
             client.action(channel, "is here!");
         break;
-        case "!bye" :
-         if (userstate.username == auth.author){
-               client.say (channel, "good bye!");
-            setTimeout(function(){
-                client.disconnect();
-            },3000);
-         }else{
-               client.say (channel, "You are not my host");
-              };
-        break;
         case "!channels":
             var arr = client.getChannels(),
             mess = "";
@@ -75,4 +65,26 @@ client.on("join", function (channel, username, self) {
         }, 3000);
     };
 
+});
+
+// Admin control
+
+client.on("chat", function (channel, userstate, message, self) {
+    
+    if (self) return;
+     if (userstate.username == auth.author){
+
+        switch (message) {
+          case "!bye" :
+          console.log("=========[Father authentification success!]===========");
+            client.say (channel, "good bye!");
+            setTimeout(function(){
+                client.disconnect();
+            },3000);
+        break
+        }
+    }else{
+            client.say (channel, "You are not my host");
+               
+    };
 });
