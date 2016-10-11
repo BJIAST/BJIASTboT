@@ -43,11 +43,22 @@ client.on("chat", function (channel, userstate, message, self) {
                client.say (channel, "You are not my host");
               };
         break;
+        case "!channels":
+            var arr = client.getChannels(),
+            mess = "";
+            for (i = 0; i < arr.length; i++){
+                mess += arr[i] + ", ";
+            };
+            client.say(channel, mess);
+        break;
         case "!joinme" :
-        console.log(client.getChannels());
-        client.join(userstate['username']);
-        client.say(channel, "I have joined to " + userstate['display-name'] + "`s channel");
-       
+            var chan = "#" + userstate['username'];
+            if (channel == chan){
+            client.say(channel, "hey,i`m here!");
+            }else {
+                client.join(userstate['username']);
+                client.say(channel, "I have joined to " + userstate['display-name'] + "`s channel");
+           };
         break;
         case "!help" :
             client.say(channel, "i have only !test now");
